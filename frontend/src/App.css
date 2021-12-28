@@ -1,0 +1,49 @@
+.card {
+  border: 0.5px solid black;
+  margin: auto;
+  width: 80%;
+  max-width: 300px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.card > * {
+  padding: 16px;
+}
+
+.card .header {
+  background-color: rgb(228, 88, 53);
+  font-weight: bold;
+  font-size: 22px;
+}
+
+.card .header .time {
+  font-size: 16px;
+  font-weight: 400;
+  margin: 0;
+}
+
+.card .buttons {
+  padding: 16px 10%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.card .buttons button {
+  background: none;
+  outline: none;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.card .buttons button.wrong {
+  border: 2px solid #e74c3c;
+  color: #e74c3c;
+}
+.card .buttons button.right {
+  border: 2px solid green;
+}
