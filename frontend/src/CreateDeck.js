@@ -116,9 +116,12 @@ function CreateDeck() {
       {/* Cards */}
       <div>
         <label for="name">Cards</label>
-        {cards.map((_, idx) => (
-          <CardInput cards={cards} setCards={setCards} idx={idx} />
-        ))}
+
+        <div className="collection-squared">
+          {cards.map((_, idx) => (
+            <CardInput cards={cards} setCards={setCards} idx={idx} />
+          ))}
+        </div>
 
         <button
           onClick={() =>
