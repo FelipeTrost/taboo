@@ -1,20 +1,9 @@
 import React, { useEffect, useState } from "react";
-import "./App.css";
 import { useTimer } from "react-timer-hook";
 import useCards from "./cardsHook";
 import { useLocation } from "react-router-dom";
-
-function getColor() {
-  return (
-    "hsl(" +
-    360 * Math.random() +
-    "," +
-    (25 + 70 * Math.random()) +
-    "%," +
-    (85 + 10 * Math.random()) +
-    "%)"
-  );
-}
+import Card from "./Card";
+import getColor from "./getColor";
 
 function Game() {
   const {
@@ -94,29 +83,14 @@ function Game() {
       )}
 
       {gameState == "running" && (
-        <div className="card">
-          <div className="header" style={{ backgroundColor: cardColor }}>
-            <p className="time">
-              {minutes}minutes {seconds}seconds
-            </p>
-            <p>{currentCard.word}</p>
-          </div>
-          <div>
-            <ul>
-              {currentCard.prohibited.map((word) => (
-                <li>{word}</li>
-              ))}
-            </ul>
-          </div>
-          <div className="buttons">
-            <button onClick={increasePointAndNewCard} className="right">
-              right
-            </button>
-            <button onClick={getCard} className="wrong">
-              wrong
-            </button>
-          </div>
-        </div>
+        <Card
+          cardColor={cardColor}
+          minutes={minutes}
+          seconds={seconds}
+          card={currentCard}
+          increasePointAndNewCard={increasePointAndNewCard}
+          getCard={getCard}
+        />
       )}
     </div>
   );

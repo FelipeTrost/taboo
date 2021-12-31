@@ -40,7 +40,7 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-const limit = 3;
+const limit = 10;
 router.get("/search", async (req, res, next) => {
   try {
     const searchParams = {

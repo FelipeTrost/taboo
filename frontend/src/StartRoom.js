@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDebounce } from "use-debounce";
 import { useNavigate } from "react-router-dom";
+import Collection from "./Collection";
 
 export default function StartRoom() {
   const navigate = useNavigate();
@@ -55,84 +56,110 @@ export default function StartRoom() {
 
   return (
     <div>
-      <input
-        type="text"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-      />
-
-      <div>
-        <label for="numberOfTeams">No. o. teams</label>
+      <div className="container grey">
         <input
-          type="number"
-          value={numberOfTeams}
-          id="numberOfTeams"
-          onChange={(e) => setNumberOfTeams(+e.target.value)}
-          min={2}
-          max={10}
+          type="text"
+          placeholder="Search decks"
+          className="search"
+          value={text}
+          style={{ margin: 16 }}
+          onChange={(e) => setText(e.target.value)}
         />
       </div>
 
-      <div>
-        <label for="seconds">Seconds</label>
-        <input
-          type="number"
-          value={seconds}
-          id="seconds"
-          onChange={(e) => setSeconds(+e.target.value)}
-          min={10}
-          max={120}
-        />
+      <div className="container">
+        <h2>Room settings</h2>
+        <div>
+          <label for="numberOfTeams">Number of teams</label>
+          <input
+            type="number"
+            value={numberOfTeams}
+            id="numberOfTeams"
+            onChange={(e) => setNumberOfTeams(+e.target.value)}
+            min={2}
+            max={10}
+          />
+        </div>
+
+        <div>
+          <label for="seconds">Seconds</label>
+          <input
+            type="number"
+            value={seconds}
+            id="seconds"
+            onChange={(e) => setSeconds(+e.target.value)}
+            min={10}
+            max={120}
+          />
+        </div>
+
+        <button
+          onClick={() => {
+            if (Object.keys(selected).length == 0)
+              alert("you need to select at least one collection");
+            else
+              navigate("/game", {
+                state: { selected, seconds, numberOfTeams },
+              });
+          }}
+        >
+          Start room
+        </button>
+
+        <h3>Selected decks:</h3>
+
+        <ul>
+          {Object.keys(selected).map((s) => (
+            <li key={s}>
+              {selected[s].name}
+              <button
+                onClick={() =>
+                  setSelected((prev) => {
+                    prev = { ...prev };
+                    delete prev[s];
+                    return prev;
+                  })
+                }
+              >
+                x
+              </button>
+            </li>
+          ))}
+        </ul>
       </div>
 
-      <button
-        onClick={() => {
-          if (Object.keys(selected).length == 0)
-            alert("you need to select at least one collection");
-          else
-            navigate("/game", { state: { selected, seconds, numberOfTeams } });
-        }}
-      >
-        go
-      </button>
-
-      {Object.keys(selected)
-        .map((s) => selected[s].name)
-        .join(", ")}
-
-      <ul>
-        {collections.map((coll) => (
-          <li>
-            <div
+      <div className="container grey">
+        <h2>Collections:</h2>
+        <div className="collection-squared">
+          {collections.map((coll) => (
+            <Collection
+              collection={coll}
+              key={coll._id}
               onClick={() =>
-                setSelected((current) => ({ ...current, [coll._id]: coll }))
+                setSelected((prev) => ({ ...prev, [coll._id]: coll }))
               }
-              style={{
-                border: "1px solid black",
-              }}
-            >
-              <p>{coll.name}</p>
-              <p>{coll.description}</p>
-              <p>Keywords: {coll.keywords.join(", ")}</p>
-            </div>
-          </li>
-        ))}
-      </ul>
-
-      {Array(pageCount)
-        .fill()
-        .map((_, idx) => (
-          <>
-            <input
-              type="checkbox"
-              name="page"
-              id={`page-${idx}`}
-              checked={idx === page}
-              onClick={() => setPage(idx)}
             />
-            <label for={`page-${idx}`}>{idx + 1}</label>
-          </>
-        ))}
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <p>Page</p>
+        {Array(pageCount)
+          .fill()
+          .map((_, idx) => (
+            <>
+              <input
+                type="checkbox"
+                name="page"
+                id={`page-${idx}`}
+                checked={idx === page}
+                onClick={() => setPage(idx)}
+              />
+              <label for={`page-${idx}`}>{idx + 1}</label>
+            </>
+          ))}
+      </div>
     </div>
   );
 }

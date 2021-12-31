@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import CardInput from "./CardInput";
+import getColor from "./getColor";
 
 function copy(o) {
   let out, v, key;
@@ -59,7 +61,9 @@ function CreateDeck() {
   }
 
   return (
-    <div>
+    <div className="container grey">
+      <h1>Create card deck</h1>
+      {/* Name */}
       <div>
         <label for="name">Name</label>
         <input
@@ -70,6 +74,7 @@ function CreateDeck() {
         />
       </div>
 
+      {/* Description */}
       <div>
         <label for="description">Description</label>
         <input
@@ -80,93 +85,47 @@ function CreateDeck() {
         />
       </div>
 
+      {/* Keywords */}
       <div>
-        <label for="name">Keywords</label>
-        {keywords.map((keyword, idx) => (
-          <div>
-            <input
-              type="text"
-              value={keyword}
-              onChange={(e) => setIndex(setKeywords, idx, e.target.value)}
-              id="name"
-            />
-          </div>
-        ))}
-        <button onClick={() => setKeywords((curr) => [...curr, "new keyword"])}>
+        <p>Keywords</p>
+        <ul>
+          {keywords.map((keyword, idx) => (
+            <li key={idx}>
+              <input
+                type="text"
+                placeholder="keyword"
+                value={keyword}
+                onChange={(e) => setIndex(setKeywords, idx, e.target.value)}
+                id="name"
+              />
+              <button
+                onClick={() =>
+                  setKeywords((kwrds) => kwrds.filter((_, i) => i !== idx))
+                }
+              >
+                x
+              </button>
+            </li>
+          ))}
+        </ul>
+        <button onClick={() => setKeywords((curr) => [...curr, ""])}>
           add keyword
         </button>
       </div>
 
+      {/* Cards */}
       <div>
         <label for="name">Cards</label>
-        {cards.map((card, idx) => (
-          <div
-            style={{
-              border: "1px solid black",
-              padding: 10,
-              margin: 10,
-            }}
-          >
-            <input
-              type="text"
-              value={card.word}
-              onChange={(e) => setIndex(setCards, idx, e.target.value)}
-              id="name"
-            />
-            <ul>
-              {card.prohibited.map((prohibited, idxp) => (
-                <li>
-                  <input
-                    type="text"
-                    value={prohibited}
-                    onChange={(e) =>
-                      setCards((curr) => {
-                        curr = [...curr];
-                        curr[idx].prohibited[idxp] = e.target.value;
-                        return curr;
-                      })
-                    }
-                  />
-                  <button
-                    onClick={() =>
-                      setCards((curr) => {
-                        curr = copy(curr);
-                        curr[idx].prohibited = curr[idx].prohibited.filter(
-                          (_, i) => i !== idxp
-                        );
-                        return curr;
-                      })
-                    }
-                  >
-                    delete
-                  </button>
-                </li>
-              ))}
-            </ul>
-            <button
-              onClick={() =>
-                setCards((curr) => {
-                  curr = copy(curr);
-                  curr[idx].prohibited.push("prohibited word");
-                  return curr;
-                })
-              }
-            >
-              add prohibited word
-            </button>
-
-            <button
-              onClick={() =>
-                setCards((curr) => curr.filter((_, i) => i !== idx))
-              }
-            >
-              delete
-            </button>
-          </div>
+        {cards.map((_, idx) => (
+          <CardInput cards={cards} setCards={setCards} idx={idx} />
         ))}
+
         <button
           onClick={() =>
-            setCards((curr) => [...curr, { word: "", prohibited: [] }])
+            setCards((curr) => [
+              ...curr,
+              { word: "", prohibited: ["", "", "", ""], color: getColor() },
+            ])
           }
         >
           add card
@@ -174,7 +133,7 @@ function CreateDeck() {
       </div>
 
       <br />
-      <button onClick={uploadCollection}>Upload collection</button>
+      <button onClick={uploadCollection}>Upload deck</button>
     </div>
   );
 }

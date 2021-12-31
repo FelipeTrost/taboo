@@ -1,10 +1,18 @@
+body {
+  background-color: #eee;
+}
+
 .card {
   border: 0.5px solid black;
-  margin: auto;
   width: 80%;
   max-width: 300px;
   border-radius: 10px;
   overflow: hidden;
+  background-color: #fff;
+}
+
+.card p {
+  margin: 0;
 }
 
 .card > * {
@@ -46,4 +54,53 @@
 }
 .card .buttons button.right {
   border: 2px solid green;
+}
+
+.card-collection {
+  position: relative;
+  width: fit-content;
+  width: 300px;
+}
+
+.card-collection .card {
+  width: 100%;
+}
+
+.card-collection .card:nth-child(1) {
+  position: relative;
+  z-index: 4;
+  margin: 0;
+}
+
+.card-collection .card:nth-child(2) {
+  position: absolute;
+  transform: translate(5px, -101%) rotate(1.5deg);
+  z-index: 2;
+}
+
+.collection-squared {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 10px;
+}
+
+.container {
+  background-color: #fff;
+  margin: 1px solid #000;
+  padding: 20px;
+  z-index: 0;
+}
+
+.container.grey {
+  background-color: #eee;
+}
+
+input[type="text"].search {
+  padding: 10px 16px;
+  outline: none;
+  border: 1px solid #000;
+  border-radius: 20px;
+  margin: 0 !important;
 }
